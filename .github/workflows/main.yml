@@ -3,20 +3,20 @@ name: Build and Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # altera se teu branch principal for outro
+      - main  # sempre que der push no main, vai deployar
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # ou a versão que tu usa no projeto
+          node-version: '18'
 
       - name: Install dependencies
         run: npm ci
@@ -28,6 +28,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          user_name: 'GitHub Actions'
-          user_email: 'actions@github.com'
+          publish_branch: gh-pages  # branch que o workflow vai criar/atualizar
+          publish_dir: ./dist       # pasta do build do Vite
+          keep_files: false         # limpa arquivos antigos
