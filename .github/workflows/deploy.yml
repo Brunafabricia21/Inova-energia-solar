@@ -1,0 +1,23 @@
+name: Build and Deploy to GH Pages
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # ou LTS que tu usar
+      - run: npm ci
+      - run: npm run build   # esse comando deve gerar a pasta `dist/`
+      - name: Deploy to GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
